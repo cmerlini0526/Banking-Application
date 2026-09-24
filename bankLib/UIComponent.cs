@@ -699,7 +699,7 @@ namespace bankLib
 
         #region CheckAccount Method
 
-        public Account CheckAccount(List<Account> accounts, string type, User user = null)
+        public Account CheckAccount(List<Account> accounts, string type, User? user = null)
         {
             if (accounts.Any(e => e.AccType == type))
             {

@@ -12,11 +12,11 @@ using System.Diagnostics.CodeAnalysis;
 public static class AccountCreator
 {
     public static BankAppDbContext db = new BankAppDbContext();
-    public static void CreateAccount(User user = null)
+    public static void CreateAccount(User? user = null)
     {
         #region Initializing Variables
 
-        string aName = "";
+        string? aName = "";
         string aType = "";
         int aBalance = 0;
         string aBranch = "";

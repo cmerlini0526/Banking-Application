@@ -14,7 +14,7 @@ public class UserCreator
     
     public static void CreateUser(bool isAdmin=false)
     {
-        string uName = "";
+        string? uName = "";
         while (true)
         {
             Console.WriteLine("Please choose a username: ");

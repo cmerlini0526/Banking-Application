@@ -11,13 +11,12 @@ using System.Reflection.Metadata;
 
 public class LoginHandler
 {
-    BankAppDbContext db = new BankAppDbContext();
+    private static BankAppDbContext db = new BankAppDbContext();
     PasswordHider ph = new PasswordHider();
 
     public static User Login(string userInput = "")
     {
-        BankAppDbContext db = new BankAppDbContext();
-        string uName;
+        string? uName;
         string pWord;
         int unAttempts = 0;
         int pwAttempts = 0;

@@ -43,7 +43,7 @@ namespace bankLib
                             Console.WriteLine("User #" + input + " Found");
                             Console.WriteLine("Are you sure you would like to delete user and all accounts?");
                             Console.WriteLine("Type YES to delete, or enter anything to return");
-                            string response = Console.ReadLine();
+                            string? response = Console.ReadLine();
                             if (response == "YES")
                             {
                                 var accounts = db.Accounts.Where(e => e.AccOwnerId == input).ToList();
@@ -150,7 +150,7 @@ namespace bankLib
                             Console.WriteLine("For each field, enter new value, or press enter to skip.");
                             Console.WriteLine("Alternatively enter 0 to cancel");
                             Console.WriteLine("Enter New Username: ");
-                            string newUser = Console.ReadLine();
+                            string? newUser = Console.ReadLine();
                             if (newUser == "0")
                             {
                                 throw new TimeoutException();
@@ -193,7 +193,7 @@ namespace bankLib
                             Console.WriteLine("For each field, enter new value, or press enter to skip.");
                             Console.WriteLine("Alternatively enter 0 to cancel");
                             Console.WriteLine("Enter New Account Name: ");
-                            string newName = Console.ReadLine();
+                            string? newName = Console.ReadLine();
                             if (newName == "0")
                             {
                                 throw new TimeoutException();
@@ -203,7 +203,7 @@ namespace bankLib
                                 accEdit.AccName = newName;
                             }
                             Console.WriteLine("Enter New Branch: ");
-                            string newBranch = Console.ReadLine();
+                            string? newBranch = Console.ReadLine();
                             if (newBranch == "0")
                             {
                                 throw new TimeoutException();

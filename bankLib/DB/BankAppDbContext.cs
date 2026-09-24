@@ -27,7 +27,7 @@ public partial class BankAppDbContext : DbContext
     {
         FileStream connectionFile = new FileStream("db.txt", FileMode.Open, FileAccess.Read);
         StreamReader connectionReader = new StreamReader(connectionFile);
-        string output = connectionReader.ReadLine();
+        string? output = connectionReader.ReadLine();
         connectionReader.Close();
         connectionFile.Close();
         return output;
