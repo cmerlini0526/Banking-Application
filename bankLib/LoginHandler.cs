@@ -109,10 +109,6 @@ public class LoginHandler
         if (unAttempts < 3 && pwAttempts < 3)
         {
             Console.WriteLine("Credentials Accepted!");
-            if (userInput.IsNullOrEmpty())
-            {
-                Console.WriteLine("Welcome to BANK " + uName);
-            }
             return db.Users.Single(e => e.UserName == uName);
         }
         else

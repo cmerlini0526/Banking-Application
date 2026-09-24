@@ -289,16 +289,16 @@ namespace bankLib
                 avgBalance = (from a in db.Accounts
                                 select a.AccBalance).Average(),
                 };
-            Console.WriteLine("========== SUMMARY ==========");
+            Console.WriteLine("=============== SUMMARY ===============");
             Console.WriteLine("        Total Users : " + stats.totalUsers);
             Console.WriteLine("     Total Accounts : " + stats.totalAccs);
             Console.WriteLine("  Total Active Accs : " + stats.totalActive);
             Console.WriteLine("Total Inactive Accs : " + stats.totalInactive);
             Console.WriteLine(" Total Transactions : " + stats.totalTrans);
-            Console.WriteLine(     "Total Requests : " + stats.totalReqs);
+            Console.WriteLine("     Total Requests : " + stats.totalReqs);
             Console.WriteLine("      Total Balance : " + Convert.ToDouble(stats.totalBalance).ToString("C"));
             Console.WriteLine("    Average Balance : " + Convert.ToDouble(stats.avgBalance).ToString("C"));
-            Console.WriteLine("==============================");
+            Console.WriteLine("========================================");
 
         }
 
@@ -326,7 +326,7 @@ namespace bankLib
                         string response = Console.ReadLine();
                         if (response == "YES")
                         {
-                            user.UserPass = "password";
+                            user.UserPass = "password1!";
                             db.Update(user);
                             db.SaveChanges();
                             Console.WriteLine("User Password Reset");

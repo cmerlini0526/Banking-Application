@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Data;
 using System.Runtime;
 using System.Timers;
 using System.Transactions;
@@ -13,7 +14,7 @@ namespace bankLib
 {
     public class AccountActions
     {
-        public static BankAppDbContext db = new BankAppDbContext();
+        public static BankAppDbContext db => new BankAppDbContext();
 
         #region Print Account Details Method
 
@@ -91,7 +92,7 @@ namespace bankLib
                     }
                     else
                     {
-                        throw new WarningException("Deposit too large, please enter a valid amount up to " + acc.AccBalance);
+                        Console.WriteLine("Deposit too large, please enter a valid amount up to " + acc.AccBalance);
                     }
 
                 }

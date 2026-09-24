@@ -209,7 +209,7 @@ namespace bankLib
                         case 3:
                             while (true)
                             {
-                                Console.WriteLine("Which account would you like to deposit to?");
+                                Console.WriteLine("Which account would you like to d1eposit to?");
                                 Console.WriteLine("1. Checking");
                                 Console.WriteLine("2. Savings");
                                 Console.WriteLine("3. Loan");
@@ -405,8 +405,9 @@ namespace bankLib
                                 {
                                     break;
                                 }
-                                catch (Exception)
+                                catch (Exception e)
                                 {
+                                    Console.WriteLine(e.Message);
                                     Console.WriteLine("Please enter a number 1 - 3");
                                 }                           
                             }
@@ -784,33 +785,44 @@ namespace bankLib
 
         #region CheckValue Method
 
-        public double CheckValue(string type)
+        public double CheckValue(string type, Account? acc = null)
         {
             while (true)
             {
                 try
                 {
-                double input = Convert.ToDouble(Console.ReadLine());
-                if (input == 0)
-                {
-                    throw new TimeoutException();
-                }
-                else if (input < 0)
-                {
-                    throw new WarningException("Cannot " + type + " negative balance");
-                }
-                else if (input > 1000000000000000)
-                {
-                    throw new WarningException("Input too large. Please try again");
-                }
-                else
-                {
-                    return input;
-                }
+                    double input = Convert.ToDouble(Console.ReadLine());
+                    if (acc == null || input <= acc.AccBalance )
+                    {
+                        if (input == 0)
+                        {
+                            throw new TimeoutException();
+                        }
+                        else if (input < 0)
+                        {
+                            throw new WarningException("Cannot " + type + " negative balance");
+                        }
+                        else if (input > 1000000000000000)
+                        {
+                            throw new WarningException("Input too large. Please try again");
+                        }
+                        else
+                        {
+                            return input;
+                        }
+                    }
+                    else
+                    {
+                        throw new WarningException("Deposit too large, please enter a valid amount up to " + acc.AccBalance);
+                    }
                 }
                 catch (TimeoutException)
                 {
                     return -1;
+                }
+                catch (WarningException e)
+                {
+                    Console.WriteLine(e.Message);
                 }
                 catch (Exception e)
                 {
@@ -827,15 +839,15 @@ namespace bankLib
         {
             double withAmount;
             Console.WriteLine("Please enter the amount you would like to withdraw");
-            withAmount = CheckValue("Withdraw");
+            withAmount = CheckValue("Withdraw", withAcc);
             if (withAmount == -1)
             {
                 Console.WriteLine("Returning...");
             }
             else
             {
-            double newBal = AccountActions.Deposit(withAmount, withAcc);
-            Console.WriteLine("Deposit successful!");
+            double newBal = AccountActions.Withdraw(withAmount, withAcc);
+            Console.WriteLine("Withdrawal successful!");
             Console.WriteLine("New balance is : " + Convert.ToDouble(withAcc.AccBalance).ToString("C"));   
             }
         }
@@ -848,7 +860,14 @@ namespace bankLib
         {
             double depAmount;
             Console.WriteLine("Please enter the amount you would like to deposit");
-            depAmount = CheckValue("Deposit");
+            if (depAcc.AccType == "Loan")
+            {
+                depAmount = CheckValue("Deposit", depAcc);
+            }
+            else
+            {
+                depAmount = CheckValue("Deposit", null);
+            }
             if (depAmount == -1)
             {
                 Console.WriteLine("Returning...");
