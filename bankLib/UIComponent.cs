@@ -14,6 +14,7 @@ namespace bankLib
 {
     public class UIComponents
     {
+        public static BankAppDbContext db = new BankAppDbContext();
         public virtual void MainMenu()
         {
             int userChoice = 0;
@@ -83,7 +84,6 @@ namespace bankLib
         public void UserMenu(User user)
         {
             int userChoice = 0;
-            BankAppDbContext db = new BankAppDbContext();
             var userAccounts = db.Accounts.Where(e => e.AccOwnerId == user.UserId).ToList();
 
             while (true)
@@ -213,7 +213,7 @@ namespace bankLib
                         case 3:
                             while (true)
                             {
-                                Console.WriteLine("Which account would you like to d1eposit to?");
+                                Console.WriteLine("Which account would you like to deposit to?");
                                 Console.WriteLine("1. Checking");
                                 Console.WriteLine("2. Savings");
                                 Console.WriteLine("3. Loan");
@@ -486,7 +486,6 @@ namespace bankLib
                 try
                 {
                     userChoice = Convert.ToInt32(Console.ReadLine());
-                    BankAppDbContext db = new BankAppDbContext();
                     Console.Clear();
                     
                     switch (userChoice)
@@ -749,9 +748,9 @@ namespace bankLib
                         throw new WarningException("Cannot transfer to self");
                     }
 
-                    if (AccountActions.db.Accounts.Any(e => e.AccId == receiverID))
+                    if (db.Accounts.Any(e => e.AccId == receiverID))
                     {
-                        transAcc = AccountActions.db.Accounts.Single(e => e.AccId == receiverID);
+                        transAcc = db.Accounts.Single(e => e.AccId == receiverID);
                     }
                     else
                     {
@@ -932,8 +931,9 @@ namespace bankLib
                         Console.WriteLine("Returning...");
                         break;
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
+                        Console.WriteLine(e.Message);
                         Console.WriteLine("Please enter a valid number or 0 to exit.");
                     }
                 }

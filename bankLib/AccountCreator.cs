@@ -11,7 +11,6 @@ using System.Diagnostics.CodeAnalysis;
 
 public static class AccountCreator
 {
-    public static BankAppDbContext db = new BankAppDbContext();
     public static void CreateAccount(User? user = null)
     {
         #region Initializing Variables
@@ -184,7 +183,7 @@ public static class AccountCreator
 
         #endregion
 
-        db.Add(new Account()
+        UIComponents.db.Add(new Account()
         {
             AccName = aName,
             AccBranch = aBranch,
@@ -193,7 +192,7 @@ public static class AccountCreator
             AccIsActive = true,
             AccOwnerId = user.UserId
         });
-        db.SaveChanges(); 
+        UIComponents.db.SaveChanges(); 
 
         Console.WriteLine("Account Created Successfully!");
         }

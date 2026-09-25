@@ -14,8 +14,6 @@ namespace bankLib
 {
     public class AccountActions
     {
-        public static BankAppDbContext db => new BankAppDbContext();
-
         #region Print Account Details Method
 
         public static void PrintDetails(Account account)
@@ -42,12 +40,12 @@ namespace bankLib
                                                     TransDate = DateTime.Now,
                                                     TransOldBal = Convert.ToDouble(acc.AccBalance),
                                                     TransChange = -amt,
-                                                    TransType = "Deposit"
+                                                    TransType = "Withdrawal"
                                                     };
                 acc.AccBalance -= amt;
-                db.Add(newTrans);
-                db.Update(acc);
-                db.SaveChanges();
+                UIComponents.db.Add(newTrans);
+                UIComponents.db.Update(acc);
+                UIComponents.db.SaveChanges();
                 return Convert.ToDouble(acc.AccBalance);
             }
             else if (amt == 0)
@@ -101,9 +99,9 @@ namespace bankLib
                     acc.AccBalance += amt;
                     newTrans.TransChange = amt;
                 }
-                db.Add(newTrans);
-                db.Update(acc);
-                db.SaveChanges();
+                UIComponents.db.Add(newTrans);
+                UIComponents.db.Update(acc);
+                UIComponents.db.SaveChanges();
                 return Convert.ToDouble(acc.AccBalance);
             }
             else if (amt == 0)
@@ -148,11 +146,11 @@ namespace bankLib
                                                     };
                 accSender.AccBalance -= amt;
                 accReceiver.AccBalance += amt;
-                db.Add(newTrans);
-                db.Add(receiverTrans);
-                db.Update(accSender);
-                db.Update(accReceiver);
-                db.SaveChanges();
+                UIComponents.db.Add(newTrans);
+                UIComponents.db.Add(receiverTrans);
+                UIComponents.db.Update(accSender);
+                UIComponents.db.Update(accReceiver);
+                UIComponents.db.SaveChanges();
                 return Convert.ToDouble(accSender.AccBalance);
             }
             else if (amt == 0)
@@ -175,9 +173,9 @@ namespace bankLib
 
         public static void RequestCheck(Account acc)
         {
-            if (db.CheckRequests.Any(e => e.AccId == acc.AccId))
+            if (UIComponents.db.CheckRequests.Any(e => e.AccId == acc.AccId))
             {
-                var request = db.CheckRequests.Where(e => e.AccId == acc.AccId)
+                var request = UIComponents.db.CheckRequests.Where(e => e.AccId == acc.AccId)
                                                         .OrderByDescending(e => e.ReqId)
                                                         .Take(1)
                                                         .Single();
@@ -189,8 +187,8 @@ namespace bankLib
                                       UserId = acc.AccOwnerId,
                                       ReqOpenDate = DateTime.Now
                                     };
-                    db.Add(newReq);
-                    db.SaveChanges();
+                    UIComponents.db.Add(newReq);
+                    UIComponents.db.SaveChanges();
                     Console.WriteLine("Check book request has been submitted!");
                 }
                 else
@@ -206,8 +204,8 @@ namespace bankLib
                                   UserId = acc.AccOwnerId,
                                   ReqOpenDate = DateTime.Now
                                 };
-                db.Add(newReq);
-                db.SaveChanges();
+                UIComponents.db.Add(newReq);
+                UIComponents.db.SaveChanges();
                 Console.WriteLine("Check book request has been submitted!");
             }
         }

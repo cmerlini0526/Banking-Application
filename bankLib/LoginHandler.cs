@@ -11,7 +11,6 @@ using System.Reflection.Metadata;
 
 public class LoginHandler
 {
-    private static BankAppDbContext db = new BankAppDbContext();
     PasswordHider ph = new PasswordHider();
 
     public static User Login(string userInput = "")
@@ -37,7 +36,7 @@ public class LoginHandler
                 {
                     throw new WarningException("Too many attempts. Returning to menu...");
                 }
-                if (!db.Users.Any(c => c.UserName == uName))
+                if (!UIComponents.db.Users.Any(c => c.UserName == uName))
                 {
                     throw new Exception("Username not found, please try again.");
                 }
@@ -79,7 +78,7 @@ public class LoginHandler
             }
             pWord = PasswordHider.ReadInput();
 
-            var validUser = db.Users.Single(e => e.UserName == uName);
+            var validUser = UIComponents.db.Users.Single(e => e.UserName == uName);
             try
             {
                 if (pwAttempts > 3)
@@ -108,7 +107,7 @@ public class LoginHandler
         if (unAttempts < 3 && pwAttempts < 3)
         {
             Console.Clear();
-            return db.Users.Single(e => e.UserName == uName);
+            return UIComponents.db.Users.Single(e => e.UserName == uName);
         }
         else
         {

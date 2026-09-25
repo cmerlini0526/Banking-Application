@@ -11,8 +11,6 @@ namespace bankLib
 {
     public static class AdminActions
     {
-    static BankAppDbContext db = new BankAppDbContext();
-
         #region DeleteAccount
 
         public static void DeleteAccount(string type, User admin)
@@ -22,7 +20,7 @@ namespace bankLib
                 try
                 {
                     int input = Convert.ToInt32(Console.ReadLine());
-                    User user = db.Users.Single(e => e.UserId == input);
+                    User user = UIComponents.db.Users.Single(e => e.UserId == input);
                     if (type == "User")
                     {
                         if (input == 0)
@@ -38,7 +36,7 @@ namespace bankLib
                         {
                             throw new Exception("Cannot delete admin");
                         }
-                        else if (db.Users.Any(e => e.UserId == input))
+                        else if (UIComponents.db.Users.Any(e => e.UserId == input))
                         {
                             Console.WriteLine("User #" + input + " Found");
                             Console.WriteLine("Are you sure you would like to delete user and all accounts?");
@@ -46,7 +44,7 @@ namespace bankLib
                             string? response = Console.ReadLine();
                             if (response == "YES")
                             {
-                                var accounts = db.Accounts.Where(e => e.AccOwnerId == input).ToList();
+                                var accounts = UIComponents.db.Accounts.Where(e => e.AccOwnerId == input).ToList();
                                 foreach (Account acc in accounts)
                                 {
                                     acc.AccName = null;
@@ -54,13 +52,13 @@ namespace bankLib
                                     acc.AccType = null;
                                     acc.AccBranch = null;
                                     acc.AccIsActive = false;
-                                    db.Update(acc);
-                                    db.SaveChanges();
+                                    UIComponents.db.Update(acc);
+                                    UIComponents.db.SaveChanges();
                                 }
                                 user.UserName = null;
                                 user.UserPass = null;
-                                db.Update(user);
-                                db.SaveChanges();
+                                UIComponents.db.Update(user);
+                                UIComponents.db.SaveChanges();
                                 Console.WriteLine("User and Accounts Deleted");
                                 break;
                             }
@@ -80,7 +78,7 @@ namespace bankLib
                         {
                             throw new TimeoutException();
                         }
-                        else if (db.Users.Any(e => e.UserId == input))
+                        else if (UIComponents.db.Users.Any(e => e.UserId == input))
                         {
                             Console.WriteLine("Account #" + input + " Found");
                             Console.WriteLine("Are you sure you would like to delete?");
@@ -88,14 +86,14 @@ namespace bankLib
                             string response = Console.ReadLine();
                             if (response == "YES")
                             {
-                                Account acc = db.Accounts.Single(e => e.AccId == input);
+                                Account acc = UIComponents.db.Accounts.Single(e => e.AccId == input);
                                 acc.AccName = null;
                                 acc.AccBalance = null;
                                 acc.AccType = null;
                                 acc.AccBranch = null;
                                 acc.AccIsActive = false;
-                                db.Update(acc);
-                                db.SaveChanges();
+                                UIComponents.db.Update(acc);
+                                UIComponents.db.SaveChanges();
                                 Console.WriteLine("Account Deleted");
                                 break;
                             }
@@ -135,7 +133,7 @@ namespace bankLib
                 try
                 {
                     int input = Convert.ToInt32(Console.ReadLine());
-                    User user = db.Users.Single(e => e.UserId == input);
+                    User user = UIComponents.db.Users.Single(e => e.UserId == input);
                     if (type == "User")
                     {
                         if (input == 0)
@@ -143,9 +141,9 @@ namespace bankLib
                             throw new TimeoutException();
 
                         }
-                        else if (db.Users.Any(e => e.UserId == input))
+                        else if (UIComponents.db.Users.Any(e => e.UserId == input))
                         {
-                            User userEdit = db.Users.Single(e => e.UserId == input);
+                            User userEdit = UIComponents.db.Users.Single(e => e.UserId == input);
                             Console.WriteLine("User #" + input + " Found");
                             Console.WriteLine("For each field, enter new value, or press enter to skip.");
                             Console.WriteLine("Alternatively enter 0 to cancel");
@@ -169,8 +167,8 @@ namespace bankLib
                             {
                                 userEdit.UserPass = newPass;
                             }
-                            db.Update(userEdit);
-                            db.SaveChanges();
+                            UIComponents.db.Update(userEdit);
+                            UIComponents.db.SaveChanges();
                             Console.WriteLine("User Edited");
                             break;
                         }
@@ -186,9 +184,9 @@ namespace bankLib
                             throw new TimeoutException();
 
                         }
-                        else if (db.Accounts.Any(e => e.AccId == input))
+                        else if (UIComponents.db.Accounts.Any(e => e.AccId == input))
                         {
-                            Account accEdit = db.Accounts.Single(e => e.AccId == input);
+                            Account accEdit = UIComponents.db.Accounts.Single(e => e.AccId == input);
                             Console.WriteLine("User #" + input + " Found");
                             Console.WriteLine("For each field, enter new value, or press enter to skip.");
                             Console.WriteLine("Alternatively enter 0 to cancel");
@@ -245,8 +243,8 @@ namespace bankLib
                             {
                                 accEdit.AccIsActive = Convert.ToBoolean(newActive);;
                             }
-                            db.Update(accEdit);
-                            db.SaveChanges();
+                            UIComponents.db.Update(accEdit);
+                            UIComponents.db.SaveChanges();
                             Console.WriteLine("Account Edited");
                             break;
                         }
@@ -277,23 +275,23 @@ namespace bankLib
         {
             var stats = new 
                 {
-                totalUsers = (from u in db.Users
+                totalUsers = (from u in UIComponents.db.Users
                             select u).Count(),
-                totalAccs = (from a in db.Accounts
+                totalAccs = (from a in UIComponents.db.Accounts
                             select a).Count(),
-                totalActive = (from a in db.Accounts
+                totalActive = (from a in UIComponents.db.Accounts
                             where a.AccIsActive == true
                             select a).Count(),
-                totalInactive = (from a in db.Accounts
+                totalInactive = (from a in UIComponents.db.Accounts
                             where a.AccIsActive != true
                             select a).Count(),
-                totalTrans = (from t in db.TransactionHistories
+                totalTrans = (from t in UIComponents.db.TransactionHistories
                             select t).Count(),
-                totalReqs = (from r in db.CheckRequests
+                totalReqs = (from r in UIComponents.db.CheckRequests
                             select r).Count(),
-                totalBalance = (from a in db.Accounts
+                totalBalance = (from a in UIComponents.db.Accounts
                                 select a.AccBalance).Sum(),
-                avgBalance = (from a in db.Accounts
+                avgBalance = (from a in UIComponents.db.Accounts
                                 select a.AccBalance).Average(),
                 };
             Console.WriteLine("=============== SUMMARY ===============");
@@ -326,9 +324,9 @@ namespace bankLib
                     {
                         throw new TimeoutException();
                     }
-                    else if (db.Users.Any(e => e.UserId == input))
+                    else if (UIComponents.db.Users.Any(e => e.UserId == input))
                     {
-                        User user = db.Users.Single(e => e.UserId == input);
+                        User user = UIComponents.db.Users.Single(e => e.UserId == input);
                         Console.WriteLine("User #" + input + " Found");
                         Console.WriteLine("Are you sure you would like to reset user password?");
                         Console.WriteLine("Type YES to delete, or enter anything to return");
@@ -336,8 +334,8 @@ namespace bankLib
                         if (response == "YES")
                         {
                             user.UserPass = "password1!";
-                            db.Update(user);
-                            db.SaveChanges();
+                            UIComponents.db.Update(user);
+                            UIComponents.db.SaveChanges();
                             Console.WriteLine("User Password Reset");
                             break;
                         }
@@ -369,7 +367,7 @@ namespace bankLib
 
         public static void ApproveReqs()
         {
-            var outstanding = (from req in db.CheckRequests
+            var outstanding = (from req in UIComponents.db.CheckRequests
                                 where req.ReqAccepted != true
                                 orderby req.ReqOpenDate ascending
                                 select req).Take(5).ToList();
@@ -393,13 +391,13 @@ namespace bankLib
                 {
                     break;
                 }
-                if (db.CheckRequests.Any(e => e.ReqId.ToString() == input && e.ReqAccepted != true))
+                if (UIComponents.db.CheckRequests.Any(e => e.ReqId.ToString() == input && e.ReqAccepted != true))
                 {
-                    CheckRequest reqAccept = db.CheckRequests.Single(e => e.ReqId.ToString() == input);
+                    CheckRequest reqAccept = UIComponents.db.CheckRequests.Single(e => e.ReqId.ToString() == input);
                     reqAccept.ReqRespondDate = DateTime.Now;
                     reqAccept.ReqAccepted = true;
-                    db.Update(reqAccept);
-                    db.SaveChanges();
+                    UIComponents.db.Update(reqAccept);
+                    UIComponents.db.SaveChanges();
                     Console.WriteLine($"Reqest ID {reqAccept.ReqId} has been approved!");
                     break;
                 }

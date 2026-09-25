@@ -10,7 +10,6 @@ using System.ComponentModel.DataAnnotations;
 
 public class UserCreator
 {
-    static BankAppDbContext db = new BankAppDbContext();
     
     public static void CreateUser(bool isAdmin=false)
     {
@@ -29,7 +28,7 @@ public class UserCreator
                 {
                     throw new Exception("Only alpha-numeric characters allowed! Please try again or enter 0 to exit");
                 }
-                else if (db.Users.Any(u => u.UserName == uName))
+                else if (UIComponents.db.Users.Any(u => u.UserName == uName))
                 {
                     throw new Exception("Username taken! Please try again or enter 0 to exit");
                 }
@@ -54,12 +53,12 @@ public class UserCreator
             Console.WriteLine("Please Choose Password: ");
             string pWord = SetPassword();
 
-            db.Add(new User()
+            UIComponents.db.Add(new User()
             {
                 UserName = uName,
                 UserPass = pWord
             });
-            db.SaveChanges();
+            UIComponents.db.SaveChanges();
             if (isAdmin)
             {
                 Console.WriteLine("Valid Credentials. User: " + uName + " created");
