@@ -18,12 +18,14 @@ namespace bankLib
 
         public static void PrintDetails(Account account)
         {
+            Console.WriteLine("==============================");
             Console.WriteLine("Account Number   : " + account.AccId);
             Console.WriteLine("Account Owner ID : " + account.AccOwnerId);
             Console.WriteLine("Account Balance  : " + Convert.ToDouble(account.AccBalance).ToString("C"));
             Console.WriteLine("Account Branch   : " + account.AccBranch);
             Console.WriteLine("Account Type     : " + account.AccType);
-            Console.WriteLine("Account Active   : " + account.AccIsActive);   
+            Console.WriteLine("Account Active   : " + account.AccIsActive);
+            Console.WriteLine("==============================");
         }
 
         #endregion

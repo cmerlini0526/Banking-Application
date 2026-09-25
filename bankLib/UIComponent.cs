@@ -44,15 +44,18 @@ namespace bankLib
                             break;
                         case 2:
                             User loggedAdmin = LoginHandler.Login();
-                            if (Convert.ToBoolean(loggedAdmin.UserIsAdmin))
+                            if (loggedAdmin == null)
+                            {
+                                throw new DataException("Returning...");   
+                            }
+                            else if (Convert.ToBoolean(loggedAdmin.UserIsAdmin))
                             {
                                 AdminMenu(loggedAdmin);
                             }
                             else
                             {
                                 Console.WriteLine("User is not an Admin");
-                                Console.WriteLine("Returning...");
-                                throw new Exception();
+                                throw new DataException("Returning...");
                             }
                             break;
                         case 3:
@@ -75,7 +78,7 @@ namespace bankLib
                 }
                 catch
                 {
-                    Console.WriteLine("Please enter a number 1-3");
+                    Console.WriteLine("Please enter a number 1-4");
                 }
 
             }

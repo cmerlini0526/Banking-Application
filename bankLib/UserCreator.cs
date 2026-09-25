@@ -52,21 +52,27 @@ public class UserCreator
         {
             Console.WriteLine("Please Choose Password: ");
             string pWord = SetPassword();
-
-            UIComponents.db.Add(new User()
+            if (pWord == "0")
             {
-                UserName = uName,
-                UserPass = pWord
-            });
-            UIComponents.db.SaveChanges();
-            if (isAdmin)
-            {
-                Console.WriteLine("Valid Credentials. User: " + uName + " created");
-
+                Console.WriteLine("Returning...");
             }
             else
             {
-                Console.WriteLine("Credentials Accepted! Welcome to BANK " + uName);
+                UIComponents.db.Add(new User()
+                {
+                    UserName = uName,
+                    UserPass = pWord
+                });
+                UIComponents.db.SaveChanges();
+                if (isAdmin)
+                {
+                    Console.WriteLine("Valid Credentials. User: " + uName + " created");
+
+                }
+                else
+                {
+                    Console.WriteLine("Credentials Accepted! Welcome to BANK " + uName);
+                }
             }
         }
 
@@ -83,7 +89,7 @@ public class UserCreator
             {
                 if (pWord == "0")
                 {
-                    throw new TimeoutException();
+                    return "0";
                 }
                 else if (pWord.IsNullOrEmpty() || (pWord.Length < 8))
                 {
@@ -102,11 +108,6 @@ public class UserCreator
                     Console.WriteLine("Password Valid!");
                     return pWord;
                 }
-            }
-            catch (TimeoutException)
-            {
-                Console.WriteLine("Returning...");
-                throw new TimeoutException();
             }
             catch (Exception e)
             {

@@ -11,12 +11,10 @@ using System.Reflection.Metadata;
 
 public class LoginHandler
 {
-    PasswordHider ph = new PasswordHider();
-
     public static User Login(string userInput = "")
     {
-        string? uName;
-        string pWord;
+        string? uName = "";
+        string? pWord = "";
         int unAttempts = 0;
         int pwAttempts = 0;
         while (true)
@@ -36,6 +34,10 @@ public class LoginHandler
                 {
                     throw new WarningException("Too many attempts. Returning to menu...");
                 }
+                if (uName == "0")
+                {
+                    break;
+                }
                 if (!UIComponents.db.Users.Any(c => c.UserName == uName))
                 {
                     throw new Exception("Username not found, please try again.");
@@ -50,6 +52,10 @@ public class LoginHandler
                     break;
                 }
             }
+            catch (TimeoutException e)
+            {
+                throw new WarningException();
+            }
             catch (WarningException e)
             {
                 Console.WriteLine(e.Message);
@@ -61,6 +67,10 @@ public class LoginHandler
                 Console.WriteLine(e.Message);
             }
 
+        }
+        if (uName == "0")
+        {
+            return null;
         }
         while (true)
         {
@@ -85,6 +95,10 @@ public class LoginHandler
                 {
                     throw new WarningException("Too many attempts. Please try again later");
                 }
+                else if (pWord == "0")
+                {
+                    break;
+                }
                 else if (pWord != validUser.UserPass)
                 {
                     pwAttempts++;
@@ -97,12 +111,17 @@ public class LoginHandler
             }
             catch (WarningException)
             {
+                Console.WriteLine("Returning...");
                 break;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
+        }
+        if (uName == "0" || pWord == "0")
+        {
+            return null;
         }
         if (unAttempts < 3 && pwAttempts < 3)
         {
