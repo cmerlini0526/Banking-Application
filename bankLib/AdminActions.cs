@@ -213,10 +213,17 @@ namespace bankLib
                                 accEdit.AccBranch = newBranch;
                             }
                             Console.WriteLine("Enter New Balance: ");
-                            double newBal = Convert.ToDouble(Console.ReadLine());
-                            if (newBal >= 0)
+                            try
                             {
-                                accEdit.AccBalance = newBal;
+                                double newBal = Convert.ToDouble(Console.ReadLine());
+                                if (newBal >= 0)
+                                {
+                                    accEdit.AccBalance = newBal;
+                                }
+                            }
+                            catch
+                            {
+                                
                             }
                             Console.WriteLine("Enter New Type: ");
                             string newType = Console.ReadLine();
@@ -299,6 +306,8 @@ namespace bankLib
             Console.WriteLine("      Total Balance : " + Convert.ToDouble(stats.totalBalance).ToString("C"));
             Console.WriteLine("    Average Balance : " + Convert.ToDouble(stats.avgBalance).ToString("C"));
             Console.WriteLine("========================================");
+
+            UIComponents.WaitToReturn();
 
         }
 

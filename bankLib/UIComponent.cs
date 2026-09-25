@@ -88,6 +88,7 @@ namespace bankLib
 
             while (true)
             {
+            Console.Clear();
             Console.WriteLine("Welcome, " + user.UserName + "!");
             Console.WriteLine("What would you like to do?");
             Console.WriteLine("1. Check Account Details");
@@ -95,13 +96,16 @@ namespace bankLib
 		    Console.WriteLine("3. Deposit");
 		    Console.WriteLine("4. Transfer");
 		    Console.WriteLine("5. Last 5 Transactions");
-		    Console.WriteLine("6. Request Cheque Book");
+		    Console.WriteLine("6. Request Check Book");
 		    Console.WriteLine("7. Change Password");
 		    Console.WriteLine("8. Exit");
 
                 try
                 {
                     userChoice = Convert.ToInt32(Console.ReadLine());
+                    
+                    Console.Clear();
+                    
                     switch (userChoice)
                     {
                         #region 1. Get Account Details
@@ -352,6 +356,7 @@ namespace bankLib
                                         change = item.TransChange.ToString("C");
                                     }
                                 double newBal = item.TransOldBal + item.TransChange;
+                                Console.WriteLine($"==============================");
                                 Console.WriteLine($"Transaction #{count}: ");
                                 Console.WriteLine("Transaction ID     : " + item.TransId);
                                 Console.WriteLine("Transaction Date   : " + item.TransDate);
@@ -361,6 +366,7 @@ namespace bankLib
                                 Console.WriteLine("New Balance        : " + newBal.ToString("C"));
                                 count++;
                             }
+                            WaitToReturn();
                             }
                             catch (Exception e)
                             {
@@ -464,10 +470,9 @@ namespace bankLib
         public void AdminMenu(User admin)
         {
             int userChoice = 0;
-            BankAppDbContext db = new BankAppDbContext();
-
             while (true)
             {
+            Console.Clear();
             Console.WriteLine("Welcome, Admin!");
             Console.WriteLine("What would you like to do?");
             Console.WriteLine("1. Create New User/Account");
@@ -481,6 +486,9 @@ namespace bankLib
                 try
                 {
                     userChoice = Convert.ToInt32(Console.ReadLine());
+                    BankAppDbContext db = new BankAppDbContext();
+                    Console.Clear();
+                    
                     switch (userChoice)
                     {
                         #region 1. Create New User/Account
@@ -934,6 +942,23 @@ namespace bankLib
 
         #endregion
 
+        #region WaitToReturn Method
 
+        public static void WaitToReturn()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Press Enter to Return to Menu...");
+
+            while (true)
+            {
+                var keyInfo = Console.ReadKey();
+                if (keyInfo.Key == ConsoleKey.Enter)
+                {
+                    break;
+                }
+            }
+        }
+        
+        #endregion
     }
 }

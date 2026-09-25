@@ -107,11 +107,12 @@ public class LoginHandler
         }
         if (unAttempts < 3 && pwAttempts < 3)
         {
-            Console.WriteLine("Credentials Accepted!");
+            Console.Clear();
             return db.Users.Single(e => e.UserName == uName);
         }
         else
         {
+            Console.Clear();
             Console.WriteLine("Too many attempts. Please try again later");
             return null;
         }
