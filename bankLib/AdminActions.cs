@@ -20,15 +20,15 @@ namespace bankLib
                 try
                 {
                     int input = Convert.ToInt32(Console.ReadLine());
+                    if (input == 0)
+                    {
+                        throw new TimeoutException();
+
+                    }
                     User user = UIComponents.db.Users.Single(e => e.UserId == input);
                     if (type == "User")
                     {
-                        if (input == 0)
-                        {
-                            throw new TimeoutException();
-
-                        }
-                        else if (admin.UserId == input)
+                        if (admin.UserId == input)
                         {
                             throw new Exception("Cannot delete self");
                         }
@@ -114,9 +114,9 @@ namespace bankLib
                     Console.WriteLine("Returning...");
                     break;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine("User not found, please try again or enter 0 to return...");
                 }
             }
         }
@@ -133,7 +133,6 @@ namespace bankLib
                 try
                 {
                     int input = Convert.ToInt32(Console.ReadLine());
-                    User user = UIComponents.db.Users.Single(e => e.UserId == input);
                     if (type == "User")
                     {
                         if (input == 0)
@@ -260,9 +259,9 @@ namespace bankLib
                     Console.WriteLine("Returning...");
                     break;
                 }
-                catch (Exception e)
+                catch
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine("User not found, please try again or enter 0 to return...");
                 }
             }
         }
